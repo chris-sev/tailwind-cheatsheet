@@ -21,10 +21,15 @@
     </div>
 
     <div class="flex items-center">
-      <form class="flex items-center">
+      <form
+        class="flex items-center"
+        @submit="handleSearch"
+      >
         <input
           type="text"
           name="query"
+          @input="handleSearch"
+          v-model="query"
           class="mr-3 shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline"
         />
         <button
@@ -37,3 +42,20 @@
     </div>
   </nav>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      query: ''
+    };
+  },
+  methods: {
+    handleSearch() {
+      this.$emit('searchTyped', {
+        query: this.query
+      });
+    }
+  }
+};
+</script>

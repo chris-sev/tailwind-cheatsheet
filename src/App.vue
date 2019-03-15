@@ -1,11 +1,12 @@
 <template>
-  <div class="bg-teal-lightest">
-    <Navbar />
+  <div>
+    <Navbar @searchTyped="handleSearch" />
 
     <div class="container mx-auto p-5 h-screen flex flex-wrap">
       <div class="-mx-4 w-full">
         <div
-          v-for="(category, index) in tailwindStuffs"
+          v-for="(category, index) in filteredData ||
+            tailwindData"
           :key="index"
         >
           <div class="m-4 bg-white w-full rounded shadow">
@@ -40,26 +41,30 @@ export default {
   components: { Navbar },
   data() {
     return {
-      tailwindStuffs: [
-        {
-          name: 'Fonts',
-          classes: [
-            {
-              name: 'text-xs',
-              property: 'font-size: .75rem'
-            },
-            {
-              name: 'text-sm',
-              property: 'font-size: 1rem'
-            }
-          ]
-        },
-        { name: 'Backgrounds', classes: [] },
-        { name: 'Shadows', classes: [] }
-      ]
+      query: '',
+      tailwindData: null,
+      filteredData: null
     };
+  },
+  mounted() {
+    this.fetchTailwindData();
+  },
+  methods: {
+    fetchTailwindData() {
+      fetch('https://api.jsonbin.io/b/5c8c19fbbb08b22a756ca797')
+        .then(resp => resp.json())
+        .then(data => (this.tailwindData = data));
+    },
+    handleSearch({ query }) {
+      if (!query || query.length === 0)
+        return (this.filteredData = null);
+
+      return this.$search(query, this.tailwindData, {
+        keys: ['name']
+      }).then(results => {
+        this.filteredData = results;
+      });
+    }
   }
 };
 </script>
-
-<style></style>

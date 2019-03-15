@@ -2,7 +2,9 @@
   <div>
     <Navbar @searchTyped="handleSearch" />
 
-    <div class="container mx-auto p-5 h-screen flex flex-wrap">
+    <div
+      class="container mx-auto p-5 h-screen flex flex-wrap"
+    >
       <div class="-mx-4 w-full">
         <div
           v-for="(category, index) in filteredData ||
@@ -10,16 +12,20 @@
           :key="index"
         >
           <div class="m-4 bg-white w-full rounded shadow">
-            <div class="border-b p-4">{{ category.name }}</div>
+            <div class="border-b p-4">
+              {{ category.name }}
+            </div>
             <div class="p-4">
               <ul class="list-reset">
                 <li
-                  v-for="(item, index) in category.classes"
+                  v-for="(item,
+                  index) in category.classes"
                   :key="index"
                   class="flex justify-between p-2 "
                   :class="{
                     'border-b border-grey-lighter':
-                      index !== category.classes.length - 1
+                      index !==
+                      category.classes.length - 1
                   }"
                 >
                   <div>{{ item.name }}</div>
@@ -51,7 +57,9 @@ export default {
   },
   methods: {
     fetchTailwindData() {
-      fetch('https://api.jsonbin.io/b/5c8c19fbbb08b22a756ca797')
+      fetch(
+        'https://api.jsonbin.io/b/5c8c19fbbb08b22a756ca797'
+      )
         .then(resp => resp.json())
         .then(data => (this.tailwindData = data));
     },
@@ -60,7 +68,7 @@ export default {
         return (this.filteredData = null);
 
       return this.$search(query, this.tailwindData, {
-        keys: ['name']
+        keys: ['name', 'classes.name']
       }).then(results => {
         this.filteredData = results;
       });

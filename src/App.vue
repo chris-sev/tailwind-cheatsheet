@@ -28,8 +28,8 @@
                       category.classes.length - 1
                   }"
                 >
-                  <div>{{ item.name }}</div>
-                  <div>{{ item.property }}</div>
+                  <div class="whitespace-no-wrap pr-3">{{ item.name }}</div>
+                  <div v-html="item.property"></div>
                 </li>
               </ul>
             </div>
@@ -58,7 +58,7 @@ export default {
   methods: {
     fetchTailwindData() {
       fetch(
-        'https://api.jsonbin.io/b/5c8c19fbbb08b22a756ca797'
+        'https://korzo.github.io/tailwindcss-docs-scraper/data.json'
       )
         .then(resp => resp.json())
         .then(data => (this.tailwindData = data));
@@ -68,7 +68,8 @@ export default {
         return (this.filteredData = null);
 
       return this.$search(query, this.tailwindData, {
-        keys: ['name', 'classes.name']
+        keys: ['name', 'classes.name'],
+        threshold: 0.1,
       }).then(results => {
         this.filteredData = results;
       });
